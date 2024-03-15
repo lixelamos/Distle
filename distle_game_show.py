@@ -24,7 +24,8 @@ AI_PLAYER: bool = False
 # The path to the dictionary file that you wish to play from
 DICTIONARY_PATH: str = "../dat/dictionary14.txt"
 # Main game loop begun below!
-game = DistleGame(DICTIONARY_PATH, VERBOSE, DistlePlayer() if AI_PLAYER else None)
+game = DistleGame(DICTIONARY_PATH, VERBOSE, DistlePlayer()
+if AI_PLAYER else None)
 victories = 0
 for g in range(N_GAMES):
     if VERBOSE:
