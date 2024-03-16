@@ -22,7 +22,24 @@ def get_edit_dist_table(row_str: str, col_str: str) -> list[list[int]]:
     edit_distance(row_str, col_str)
     '''
     # [!] TODO
-    return []
+    memo = [[0] * (len(col_str) + 1) for _ in range(len(row_str) + 1)]
+    for i in range(len(row_str) + 1):
+        memo[i][0] = i
+    for j in range(len(col_str) + 1):
+        memo[0][j] = j
+    for i in range(1, len(row_str) + 1):
+        for j in range(1, len(col_str) + 1):
+            # If the characters are equal, no operation is needed
+            if row_str[i - 1] == col_str[j - 1]:
+                memo[i][j] = memo[i - 1][j - 1]
+            else:
+                # Choose the minimum of three possible operations: insert, delete, or replace
+                memo[i][j] = min(memo[i - 1][j] + 1,  # Insertion
+                                 memo[i][j - 1] + 1,  # Deletion
+                                 memo[i - 1][j - 1] + 1)  # Replacement
+
+    return memo
+
 def edit_distance(s0: str, s1: str) -> int:
     '''
     Returns the edit distance between two given strings, defined as an
@@ -77,4 +94,24 @@ def get_transformation_list_with_table(s0: str, s1: str, table: list[list[int]])
     [!] MUST be implemented recursively (i.e., in top-down fashion)
     '''
     # [!] TODO
-    return []
+    def backtrack_transformations(i: int, j: int) -> list[str]:
+        if i == 0 and j == 0:
+            return []
+        elif i == 0:
+            return ["INSERT " + s1[j - 1]] + backtrack_transformations(i, j - 1)
+        elif j == 0:
+            return ["DELETE " + s0[i - 1]] + backtrack_transformations(i - 1, j)
+        else:
+            if s0[i - 1] == s1[j - 1]:
+                return backtrack_transformations(i - 1, j - 1)
+            else:
+                min_dist = min(table[i - 1][j], table[i][j - 1], table[i - 1][j - 1])
+                if min_dist == table[i - 1][j]:
+                    return ["DELETE " + s0[i - 1]] + backtrack_transformations(i - 1, j)
+                elif min_dist == table[i][j - 1]:
+                    return ["INSERT " + s1[j - 1]] + backtrack_transformations(i, j - 1)
+                else:
+                    return ["REPLACE " + s0[i - 1] + " WITH " + s1[j - 1]] + backtrack_transformations(i - 1, j - 1)
+
+    # Call the backtrack function starting from the end of both strings
+    return backtrack_transformations(len(s0), len(s1))

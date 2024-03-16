@@ -4,8 +4,7 @@ import random
 from distle_game import *
 import multiprocessing
 from joblib import Parallel, delayed # type: ignore
-# The number of rounds each dictionary will be run on, choosing a random word
-each time
+# The number of rounds each dictionary will be run on, choosing a random word each time
     # Grading Default: 100
 GAMESHOW_ROUNDS: int = 100
 # The max number of guesses your agent will have to guess the secret word each
@@ -19,20 +18,19 @@ are
     # for different choices of numbers
     # - None: no seed is set, so the words will be different each time
     # Grading Default: ??? (will be chosen for everyone's tests at grading-time)
-    SEED: Optional[int] = None
+SEED: Optional[int] = None
     # To speed up the tests, if your computer has multiple processing cores,
     # we'll devote all but one to it -- this will slow down other processes,
     # but make sure the tests finish as fast as possibles
     # Grading Default: ??? (your code should finish in time if N_CORES = 1)
-    N_CORES: int = min(multiprocessing.cpu_count()-1, 8) if
-    multiprocessing.cpu_count() > 1 else 1
+N_CORES: int = min(multiprocessing.cpu_count()-1, 8) if multiprocessing.cpu_count() > 1 else 1
     # Number of seconds your agent has to run all GAMESHOW_ROUNDS
     # Grading Default: 200 if N_CORES >= 4 else 200 * (4 - N_CORES)
-    DISTLE_GAME_TIMEOUT: int = 200 if N_CORES >= 4 else 200 * (4 - N_CORES)
+DISTLE_GAME_TIMEOUT: int = 200 if N_CORES >= 4 else 200 * (4 - N_CORES)
     # Standardized error message to explain why thresholds are or are not met
-    RATIO_MESSAGE: str = "[X] Your player is currently not winning a high enough proportion of games for full credit"
+RATIO_MESSAGE: str = "[X] Your player is currently not winning a high enough proportion of games for full credit"
 
-    def run_game_show(dict_path: str) -> list[bool]:
+def run_game_show(dict_path: str) -> list[bool]:
         '''
         Runs the game show with the parameters specified in the global constants
         above,
@@ -56,7 +54,7 @@ are
         verbose=1)(delayed(run_game_show_round)(game, rand_inds[i]) for i in
         range(GAMESHOW_ROUNDS))
         return sim_results
-    def run_game_show_round(game: "DistleGame", rand_ind: int) -> bool:
+def run_game_show_round(game: "DistleGame", rand_ind: int) -> bool:
         '''
         Runs a single round of the DistleGame; simple but used for parallel
         processing.
@@ -70,7 +68,7 @@ are
         Whether or not the player won this game
         '''
         return game.new_game(MAX_GUESSES, rand_ind = rand_ind)
-    class DistleTests(unittest.TestCase):
+class DistleTests(unittest.TestCase):
         """
         Unit tests for validating the DistlePlayer functionality. Notes:
         - If this is the set of tests provided in the solution skeleton, it represents an

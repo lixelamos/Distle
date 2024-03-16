@@ -1,4 +1,5 @@
 from edit_dist_utils import *
+import random
 class DistlePlayer:
     '''
     AI Distle Player! Contains all of the logic to automagically play
@@ -21,6 +22,11 @@ class DistlePlayer:
         in this game of Distle
         '''
         # [!] TODO
+        self.dictionary = set(dictionary)
+        self.max_guesses = max_guesses
+        self.guesses_made = 0
+        self.possible_words = set(dictionary)
+
         return
     def make_guess(self) -> str:
         '''
@@ -34,7 +40,10 @@ class DistlePlayer:
         The next guessed word from this DistlePlayer
         '''
         # [!] TODO
-        return ""
+        if not self.possible_words:
+            raise ValueError("No possible words left to guess from.")
+        return random.choice(list(self.possible_words))
+
     def get_feedback(self, guess: str, edit_distance: int, transforms: list[str]) -> None:
         '''
         Called by the DistleGame after the DistlePlayer has made an incorrect guess.
@@ -55,4 +64,9 @@ class DistlePlayer:
         get_transformation_list(guess, secret_word)
         '''
         # [!] TODO
+        self.possible_words.discard(guess)
+        print(f"Incorrect guess: {guess}")
+        print(f"Edit distance: {edit_distance}")
+        print(f"Transforms: {transforms}")
+
         return

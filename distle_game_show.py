@@ -22,7 +22,7 @@ VERBOSE: bool = True
 # or your AI DistlePlayer (True)
 AI_PLAYER: bool = False
 # The path to the dictionary file that you wish to play from
-DICTIONARY_PATH: str = "../dat/dictionary14.txt"
+DICTIONARY_PATH: str = "dat/dictionary14.txt"
 # Main game loop begun below!
 game = DistleGame(DICTIONARY_PATH, VERBOSE, DistlePlayer()
 if AI_PLAYER else None)
